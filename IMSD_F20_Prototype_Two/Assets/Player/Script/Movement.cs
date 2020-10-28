@@ -6,31 +6,59 @@ public class Movement : MonoBehaviour
 {
 	public CharacterController PlayerController;
 
+	//Movement
 	Vector3 PlayerMovement;
-	public float PlayerX;
-	public float PlayerZ;
+    float PlayerX;
+    float PlayerZ;
+    //Multipler
+    public float MovementSpeed = 5;
+
+    //Gravity
+    Vector3 GravityVector;
+    public float Gravity = -9.81f;
 
     void Start()
     {
         PlayerController = GetComponent<CharacterController>();
-        PlayerMovement = transform.right * PlayerX + transform.forward * PlayerZ;
     }
 
     void Update()
     {
+    	//Movement positions
+        PlayerX = Input.GetAxis("Horizontal");
+        PlayerZ = Input.GetAxis("Vertical");
+        PlayerMovement = transform.right * PlayerX + transform.forward * PlayerZ;
+
+        //Gravity Position
+        GravityVector = new Vector3(0, Gravity, 0);
+
+        //Touching Ground
+        if(PlayerController.isGrounded)
+        {
+        	Debug.Log("Grounded");
+        }
+
+        //Console Writes
     	if(Input.GetKey(KeyCode.W))
     	{
-    		transform.position += PlayerMovement;
     		Debug.Log("Forward");
     	}
     	else if(Input.GetKey(KeyCode.S))
     	{
-    		transform.position += -PlayerMovement;
     		Debug.Log("Backwards");
     	}
     	else if(Input.GetKey(KeyCode.D))
     	{
     		Debug.Log("Right");
     	}
+        else if(Input.GetKey(KeyCode.A))
+        {
+            Debug.Log("Left");
+        }
+
+        //Movement
+        PlayerController.Move(PlayerMovement * MovementSpeed * Time.deltaTime);
+        //Gravity
+        PlayerController.Move(GravityVector * Time.deltaTime);
     }
 }
