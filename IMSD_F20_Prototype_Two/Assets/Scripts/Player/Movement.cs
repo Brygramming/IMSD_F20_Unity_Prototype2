@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-	public CharacterController PlayerController;
+	CharacterController PlayerController;
 
 	//Movement
 	Vector3 PlayerMovement;
@@ -32,11 +32,23 @@ public class Movement : MonoBehaviour
         //Gravity Position
         GravityVector = new Vector3(0, Gravity, 0);
 
-        //Touching Ground
-        if(PlayerController.isGrounded)
+        //To See Code Works
+        Debugging();
+
+        //Movement
+        PlayerController.Move(PlayerMovement * MovementSpeed * Time.deltaTime);
+        //Gravity
+        PlayerController.Move(GravityVector * Time.deltaTime);
+    }
+
+	//Debugs
+	void Debugging()
+	{
+		//Touching Ground
+        /*if(PlayerController.isGrounded)
         {
         	Debug.Log("Grounded");
-        }
+        }*/
 
         //Console Writes
     	if(Input.GetKey(KeyCode.W))
@@ -55,10 +67,5 @@ public class Movement : MonoBehaviour
         {
             Debug.Log("Left");
         }
-
-        //Movement
-        PlayerController.Move(PlayerMovement * MovementSpeed * Time.deltaTime);
-        //Gravity
-        PlayerController.Move(GravityVector * Time.deltaTime);
-    }
+	}
 }
